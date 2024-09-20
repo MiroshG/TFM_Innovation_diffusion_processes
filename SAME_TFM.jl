@@ -1377,7 +1377,6 @@ function every_function_together(network,beta,gamma,Num,degree_val,time,dt)
     SAME_first_bs_bi_and_p00_p01(network,beta,gamma,Num,degree_val,time,dt) # check
     SAME_B00_B10_B11_G00_G01_G10_G11(network,beta,gamma,Num,degree_val,time,dt)
     SAME_C00_C01_C10_C11(network,beta,gamma,Num,degree_val,time,dt)
-    SAME_a_ja_k_equations(network,beta,gamma,Num,degree_val,time,dt)
     SAME_second_bs_bi(network,beta,gamma,Num,degree_val,time,dt)
     SAME_PHI0_00_PHI1_00_PHI1_01_PHI1_10(network,beta,gamma,Num,degree_val,time,dt)
     SAME_GAMMA_0_GAMMA_1(network,beta,gamma,Num,degree_val,time,dt)
