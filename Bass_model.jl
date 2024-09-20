@@ -100,6 +100,31 @@ function barabasi_network(num_of_individuals, degree_val)
     #plot(keys(degree_list), values(degree_list), seriestype=:scatter, xscale=:log10, yscale=:log10)
     #savefig("prueba.png")
 
+    estimate_gamma(degree_list)
+
+end
+
+function estimate_gamma_for_scale_free(degree_list)
+    degree_counts = countmap(degree_list)
+    
+    k_vals = collect(keys(degree_counts))  
+    pk_vals = collect(values(degree_counts))  
+    
+    pk_vals = pk_vals ./ sum(pk_vals)
+    
+    k_vals = k_vals[k_vals .> 1]
+    pk_vals = pk_vals[1:length(k_vals)]
+    
+    log_k = log.(k_vals)
+    log_pk = log.(pk_vals)
+    
+    A = hcat(ones(length(log_k)), log_k)
+    coeffs = A \ log_pk  # 
+    
+    gamma = -coeffs[2]
+    
+    println("Estimated gamma: $gamma")
+
 end
 
 function z_network(num_of_individuals, degree_val)
@@ -726,7 +751,7 @@ end
 gamma=0.0004
 beta=1.088
 cycles=10^3
-Num=10^3
+Num=10^4
 time_g=time_respect_parameters(beta, gamma, 0.999)
 time=time_g*Num*(gamma+beta)
 
@@ -760,7 +785,7 @@ println("First reactio algorithm")
 #s_ratio_evolution_Sc_n_All_to_all(Int(round(time)),Num,beta,gamma,cycles)
 #g_ratio_evolution_Sc_n_All_to_all(time_g,Num,beta,gamma,cycles)
 
-s_ratio_evolution_Sc_n_("square",Int(round(time)),Num,beta,gamma,cycles, 1)
+#s_ratio_evolution_Sc_n_("square",Int(round(time)),Num,beta,gamma,cycles, 1)
 #g_ratio_evolution_Sc_n_("square",50,Num,beta,gamma,cycles, 1)
 
 #s_ratio_evolution_Sc_n_("scale_free",Int(round(time)),Num,beta,gamma,cycles, 5)
@@ -1010,4 +1035,3 @@ plotting_all_together_active_links_without_SAME("scale_free",beta,gamma,Num,5,ti
 plotting_all_together_active_links_without_SAME("erdos",beta,gamma,Num,0.1,time_g)
 #plotting_all_together_active_links_without_SAME("All_to_all",beta,gamma,Num,"-",time_g)
 # =#
-
