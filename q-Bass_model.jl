@@ -701,7 +701,7 @@ function plotting_adopters_MF_qBass_All_to_all(N,beta,gamma,q,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -728,7 +728,7 @@ function plotting_adopters_MF_qBass(type,N,beta,gamma,q,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -759,7 +759,7 @@ println("erdos")
 g_ratio_evolution_qBass_Sc_n_("erdos",time_g,Num,beta,gamma,q,cycles, 0.1)
 # =#
 
-#=
+# =
 plotting_adopters_MF_qBass_All_to_all(Num,beta,gamma,q,time_g)
 plotting_adopters_MF_qBass("square",Num,beta,gamma,q,1,time_g)
 plotting_adopters_MF_qBass("scale_free",Num,beta,gamma,q,5,time_g)

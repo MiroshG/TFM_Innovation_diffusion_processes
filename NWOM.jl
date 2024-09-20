@@ -923,7 +923,7 @@ function plotting_adopters_MF_All_to_all(N,beta,gamma,delta,alpha,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2,xlabel="Time",ylabel="Density of total adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -948,7 +948,7 @@ function plotting_haters_MF_All_to_all(N,beta,gamma,delta,alpha,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of negative adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -975,7 +975,7 @@ function plotting_adopters(type,N,beta,gamma,delta,alpha,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of total adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -998,7 +998,7 @@ function plotting_haters(type,N,beta,gamma,delta,alpha, degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false)
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of negative adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)

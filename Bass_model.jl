@@ -723,10 +723,10 @@ end
 
 
 
-gamma=0.0004 #0.0004 
-beta=1.088 #1.088 
+gamma=0.0004
+beta=1.088
 cycles=10^3
-Num=10^4
+Num=10^3
 time_g=time_respect_parameters(beta, gamma, 0.999)
 time=time_g*Num*(gamma+beta)
 
@@ -760,7 +760,7 @@ println("First reactio algorithm")
 #s_ratio_evolution_Sc_n_All_to_all(Int(round(time)),Num,beta,gamma,cycles)
 #g_ratio_evolution_Sc_n_All_to_all(time_g,Num,beta,gamma,cycles)
 
-#s_ratio_evolution_Sc_n_("square",Int(50*Num*(gamma+beta)),Num,beta,gamma,cycles, 1)
+s_ratio_evolution_Sc_n_("square",Int(round(time)),Num,beta,gamma,cycles, 1)
 #g_ratio_evolution_Sc_n_("square",50,Num,beta,gamma,cycles, 1)
 
 #s_ratio_evolution_Sc_n_("scale_free",Int(round(time)),Num,beta,gamma,cycles, 5)
@@ -776,6 +776,29 @@ println("First reactio algorithm")
 #g_ratio_evolution_Sc_n_("erdos",time_g,Num,beta,gamma,cycles, 0.1)
 
 ################################### PLOTS ####################################
+
+function plotting_adopters_gaussian_std(type,N,beta,gamma,degree_val,time,cycles)
+
+    result_1=readdlm("ratio_data//s_ratio_evolution_Sc_n_-std-$type-$Num-$beta-$gamma-$degree_val.txt")
+    std_1=result_1[:,2]./sqrt(2*cycles)
+
+    x_data=result_1[:,1]
+    y_data=result_1[:,2]
+    y_std=std_1
+    n = div(length(x_data), 10)
+    x_subset = x_data[1:n:end]
+    y_subset = y_data[1:n:end]
+    y_std_subset = y_std[1:n:end]
+
+    gaussian_result=readdlm("ratio_data//Gaussian_approx_std_$beta-$gamma.txt")
+
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Standard deviation")
+    plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
+    plot!(gaussian_result[:,1],gaussian_result[:,2], label="Gaussian approximation", linestyle=:dot, linewidth=4, linecolor=:black)
+    xlims!(0,time)
+    savefig("Figures//Gaussian//std-$type-$N-$beta-$gamma-$degree_val.png")
+    
+end
 
 function plotting_all_together_with_SAME(type,beta,gamma,N,degree_val,time)
     if type=="square"
@@ -809,7 +832,7 @@ function plotting_all_together_with_SAME(type,beta,gamma,N,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="time", ylabel="Density of adopters")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of adopters")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
@@ -860,7 +883,7 @@ function plotting_all_together_without_SAME(type,beta,gamma,N,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="time", ylabel="Density of adopters")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of adopters")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
@@ -903,7 +926,7 @@ function plotting_all_together_active_links_with_SAME(type,beta,gamma,N,degree_v
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="time", ylabel="Density of active links")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of active links")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(pair_approx[:,1],pair_approx[:,2], label="Pair approximation", linewidth=4, linecolor=:red)
@@ -950,7 +973,7 @@ function plotting_all_together_active_links_without_SAME(type,beta,gamma,N,degre
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="time", ylabel="Density of active links")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of active links")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(pair_approx[:,1],pair_approx[:,2], label="Pair approximation", linewidth=4, linecolor=:red)
@@ -962,46 +985,12 @@ end
 ###############################################################################
 
 #=
-plotting_adopters_MF_All_to_all(Num,beta,gamma)
-plotting_adopters_MF("square",Num,beta,gamma,1,time_g)
-plotting_adopters_MF("scale_free",Num,beta,gamma,5,time_g)
-plotting_adopters_MF("z",Num,beta,gamma,5,time_g)
-plotting_adopters_MF("z",Num,beta,gamma,4,time_g)
-plotting_adopters_MF("erdos",Num,beta,gamma,0.1,time_g)
-# =#
-
-#=
-plotting_adopters_Gaussian_All_to_all(Num,beta,gamma)
-plotting_adopters_gaussian("square",Num,beta,gamma,1,time_g)
-plotting_adopters_gaussian("scale_free",Num,beta,gamma,5,time_g)
-plotting_adopters_gaussian("z",Num,beta,gamma,5,time_g)
-plotting_adopters_gaussian("z",Num,beta,gamma,4,time_g)
-plotting_adopters_gaussian("erdos",Num,beta,gamma,0.1,time_g)
-# =#
-
-#=
-plotting_adopters_Gaussian_All_to_all_std(Num,beta,gamma,cycles)
+plotting_adopters_gaussian_std("All_to_all",Num,beta,gamma,"-",time_g,cycles)
 plotting_adopters_gaussian_std("square",Num,beta,gamma,1,time_g,cycles)
 plotting_adopters_gaussian_std("scale_free",Num,beta,gamma,5,time_g,cycles)
 plotting_adopters_gaussian_std("z",Num,beta,gamma,5,time_g,cycles)
 plotting_adopters_gaussian_std("z",Num,beta,gamma,4,time_g,cycles)
 plotting_adopters_gaussian_std("erdos",Num,beta,gamma,0.1,time_g,cycles)
-# =#
-
-#=
-plotting_homo_pair_approx_adopters("erdos",beta,gamma,Num,0.1,time_g)
-plotting_homo_pair_approx_adopters("z",beta,gamma,Num,5,time_g)
-plotting_homo_pair_approx_adopters("z",beta,gamma,Num,4,time_g)
-plotting_homo_pair_approx_adopters("square",beta,gamma,Num,1,time_g)
-plotting_homo_pair_approx_adopters("scale_free",beta,gamma,Num,5,time_g)
-# =#
-
-#=
-plotting_homo_pair_approx_links("erdos",beta,gamma,Num,0.1,time_g)
-plotting_homo_pair_approx_links("z",beta,gamma,Num,5,time_g)
-plotting_homo_pair_approx_links("z",beta,gamma,Num,4,time_g)
-plotting_homo_pair_approx_links("square",beta,gamma,Num,1,time_g)
-plotting_homo_pair_approx_links("scale_free",beta,gamma,Num,5,time_g)
 # =#
 
 #=
