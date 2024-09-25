@@ -330,8 +330,14 @@ function s_ratio_evolution_qBass_Sc_n_(type,time,num_of_individuals,beta,gamma,q
             
             status_of_neighbors=[status_list[i] for i in dictionary_of_neighbors[rand_elem]]
 
-            #         |[α    +   (1-α)  *                     n_v/k]                          |         (N-n)           |                          
-            if rand()<(alpha + (1-alpha)*(sum(status_of_neighbors)/length(status_of_neighbors))^q)*(1-status_list[rand_elem])
+            ratio_to_the_square=1
+            for neigh in 1:q
+                rand_neighbor=rand(status_of_neighbors)
+                ratio_to_the_square*=rand_neighbor
+            end
+
+            #         |[α    +   (1-α)  *       n_v/k]       |         (N-n)           |                          
+            if rand()<(alpha + (1-alpha)*ratio_to_the_square)*(1-status_list[rand_elem])
                 status_list[rand_elem]=1.0
                 penetration+=1/num_of_individuals
                 density_links+=(length(status_of_neighbors)-2*sum(status_of_neighbors))/total_links
@@ -701,7 +707,7 @@ function plotting_adopters_MF_qBass_All_to_all(N,beta,gamma,q,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of adopters")
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time (years)",ylabel="Density of adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)
@@ -728,7 +734,7 @@ function plotting_adopters_MF_qBass(type,N,beta,gamma,q,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time",ylabel="Density of adopters")
+    plot(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2, grid=false,xlabel="Time (years)",ylabel="Density of adopters")
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:magenta2)
     xlims!(0,time)

@@ -421,9 +421,10 @@ function s_ratio_evolution_Sc_n_(type,time,num_of_individuals,beta,gamma,cycle,d
             # selection of all neighbors
             
             status_of_neighbors=[status_list[i] for i in dictionary_of_neighbors[rand_elem]]
+            rand_neighbor=rand(status_of_neighbors)
 
-            #         |[α    +   (1-α)  *                     n_v/k]                          |         (N-n)           |                          
-            if rand()<(alpha + (1-alpha)*sum(status_of_neighbors)/length(status_of_neighbors))*(1-status_list[rand_elem])
+            #         |[α    +   (1-α)  *      n_v/k]  |         (N-n)           |                          
+            if rand()<(alpha + (1-alpha)*rand_neighbor)*(1-status_list[rand_elem])
                 status_list[rand_elem]=1.0
                 penetration+=1/num_of_individuals
                 density_links+=(length(status_of_neighbors)-2*sum(status_of_neighbors))/total_links
@@ -780,13 +781,13 @@ println("Residence time algorithm")
 @btime g_ratio_evolution_Sc_n_("square",time_g,Num,beta,gamma,cycles, 1)
 println("First reactio algorithm")
 @btime f_ratio_evolution_Sc_n_("square",time_g,Num,beta,gamma,cycles, 1)
-=#
+# =#
 
 #s_ratio_evolution_Sc_n_All_to_all(Int(round(time)),Num,beta,gamma,cycles)
 #g_ratio_evolution_Sc_n_All_to_all(time_g,Num,beta,gamma,cycles)
 
 #s_ratio_evolution_Sc_n_("square",Int(round(time)),Num,beta,gamma,cycles, 1)
-#g_ratio_evolution_Sc_n_("square",50,Num,beta,gamma,cycles, 1)
+#g_ratio_evolution_Sc_n_("square",time_g,Num,beta,gamma,cycles, 1)
 
 #s_ratio_evolution_Sc_n_("scale_free",Int(round(time)),Num,beta,gamma,cycles, 5)
 #g_ratio_evolution_Sc_n_("scale_free",time_g,Num,beta,gamma,cycles, 5)
@@ -817,7 +818,7 @@ function plotting_adopters_gaussian_std(type,N,beta,gamma,degree_val,time,cycles
 
     gaussian_result=readdlm("ratio_data//Gaussian_approx_std_$beta-$gamma.txt")
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Standard deviation")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time (years)", ylabel="Standard deviation")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     plot!(gaussian_result[:,1],gaussian_result[:,2], label="Gaussian approximation", linestyle=:dot, linewidth=4, linecolor=:black)
     xlims!(0,time)
@@ -857,7 +858,7 @@ function plotting_all_together_with_SAME(type,beta,gamma,N,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of adopters")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time (years)", ylabel="Density of adopters")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
@@ -908,7 +909,7 @@ function plotting_all_together_without_SAME(type,beta,gamma,N,degree_val,time)
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of adopters")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time (years)", ylabel="Density of adopters")
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(mf_result[:,1],mf_result[:,2], label="MF approximation", linestyle=:dot, linewidth=4, linecolor=:green)
@@ -951,7 +952,7 @@ function plotting_all_together_active_links_with_SAME(type,beta,gamma,N,degree_v
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of active links")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time (years)", ylabel="Density of active links",legend=:topleft)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(pair_approx[:,1],pair_approx[:,2], label="Pair approximation", linewidth=4, linecolor=:red)
@@ -998,7 +999,7 @@ function plotting_all_together_active_links_without_SAME(type,beta,gamma,N,degre
     y_subset = y_data[1:n:end]
     y_std_subset = y_std[1:n:end]
 
-    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time", ylabel="Density of active links")
+    plot(result_1[:,1],result_1[:,2], label="Discrete time algorithm", linewidth=4, linecolor=:gray, grid=false, xlabel="Time (years)", ylabel="Density of active links",legend=:topleft)
     plot!(x_subset, y_subset, yerr=y_std_subset, seriestype=:scatter, label="", markercolor=:gray)
     #plot!(result_2[:,1],result_2[:,2], label="Residence time algorithm", linewidth=4, linecolor=:magenta2)
     plot!(pair_approx[:,1],pair_approx[:,2], label="Pair approximation", linewidth=4, linecolor=:red)
