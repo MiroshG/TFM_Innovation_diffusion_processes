@@ -421,10 +421,9 @@ function s_ratio_evolution_Sc_n_(type,time,num_of_individuals,beta,gamma,cycle,d
             # selection of all neighbors
             
             status_of_neighbors=[status_list[i] for i in dictionary_of_neighbors[rand_elem]]
-            rand_neighbor=rand(status_of_neighbors)
 
-            #         |[α    +   (1-α)  *      n_v/k]  |         (N-n)           |                          
-            if rand()<(alpha + (1-alpha)*rand_neighbor)*(1-status_list[rand_elem])
+            #         |[α    +   (1-α)  *                     n_v/k]                          |         (N-n)           |                          
+            if rand()<(alpha + (1-alpha)*sum(status_of_neighbors)/length(status_of_neighbors))*(1-status_list[rand_elem])
                 status_list[rand_elem]=1.0
                 penetration+=1/num_of_individuals
                 density_links+=(length(status_of_neighbors)-2*sum(status_of_neighbors))/total_links

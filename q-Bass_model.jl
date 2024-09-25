@@ -330,14 +330,8 @@ function s_ratio_evolution_qBass_Sc_n_(type,time,num_of_individuals,beta,gamma,q
             
             status_of_neighbors=[status_list[i] for i in dictionary_of_neighbors[rand_elem]]
 
-            ratio_to_the_square=1
-            for neigh in 1:q
-                rand_neighbor=rand(status_of_neighbors)
-                ratio_to_the_square*=rand_neighbor
-            end
-
-            #         |[α    +   (1-α)  *       n_v/k]       |         (N-n)           |                          
-            if rand()<(alpha + (1-alpha)*ratio_to_the_square)*(1-status_list[rand_elem])
+            #         |[α    +   (1-α)  *                     n_v/k]                          |         (N-n)           |                          
+            if rand()<(alpha + (1-alpha)*(sum(status_of_neighbors)/length(status_of_neighbors))^q)*(1-status_list[rand_elem])
                 status_list[rand_elem]=1.0
                 penetration+=1/num_of_individuals
                 density_links+=(length(status_of_neighbors)-2*sum(status_of_neighbors))/total_links
